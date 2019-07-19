@@ -1,0 +1,64 @@
+<html>
+    <header>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    </header>
+    <body>
+        Players:
+        <div id="players"></div>
+        <br>
+        Room Code:
+        <div id="rc"></div>
+        <br>
+        Admin:
+        <div id="admin"></div>
+        <br>
+        Who Am I:
+        <div id="whoami"></div>
+        <br>
+        <button id="start" style="display: none">Start Game</button>
+
+    </body>
+    <script>
+        var refreshCalls = function(){
+            $.get('/room/players', function(data){
+                $('#players').text(data);
+            });
+            
+            $.get('/room/code', function(data){
+                $('#rc').text(data);
+            })
+
+            $.get('/room/admin',function(data){
+                $('#admin').text(data);
+            });
+
+            $.get('/whoami',function(data){
+                $('#whoami').text(data);
+            })
+        }
+        refreshCalls();
+
+        if($('#admin').text() == $('#whoami').text()){
+            let startEvent = function(){
+                let response = function(data){
+                    if(data === true){
+                        location.reload();
+                    }
+                    else{
+                        console.log(`Response from start game: [${data}]`);
+                    }
+                };
+                let fail = function(err){
+                    console.log(err);
+                };
+                $.getJSON('game/startgame',response).fail(fail);
+            }
+            
+            $('#start').removeAttr('style').click(startEvent);
+
+        }
+
+        setInterval(refreshCalls,5000);
+        
+    </script>
+</html>
