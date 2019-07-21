@@ -54,7 +54,9 @@ module.exports.joinRoom = function(req,res){
                 res.redirect('/');
             }
             else{
-                res.redirect('/join');
+                req.session.playerId = req.body.playerId;
+                req.session.roomCode = req.body.roomCode;
+                res.redirect('/');
             }
         }
     }
@@ -89,10 +91,11 @@ module.exports.whoami = function(req,res){
 
 let gameRouter = require('express').Router();
 let gameRoutes = require('./gameroutes')
+let middleware = require('./middleware');
 
+gameRouter.use(middleware.requireJoin);
 
-gameRouter.use(require('./middleware').requireJoin);
-
+gameRouter.use(middleware.objmiddleware);
 gameRouter.get('/startgame',gameRoutes.startgame);
 
 module.exports.gamerouter = gameRouter;

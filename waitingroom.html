@@ -16,7 +16,9 @@
         <div id="whoami"></div>
         <br>
         <button id="start" style="display: none">Start Game</button>
-
+        <div id="action" style="display: none">
+            Waiting for <div id="whoaction"></div> to start the game.
+        </div>
     </body>
     <script>
         var refreshCalls = function(){
@@ -24,39 +26,38 @@
                 $('#players').text(data);
             });
             
-            $.get('/room/code', function(data){
-                $('#rc').text(data);
-            })
-
-            $.get('/room/admin',function(data){
-                $('#admin').text(data);
-            });
-
-            $.get('/whoami',function(data){
-                $('#whoami').text(data);
-            })
         }
         refreshCalls();
+        
+        $.get('/room/code', function(data){
+            $('#rc').text(data);
+        });
 
-        if($('#admin').text() == $('#whoami').text()){
-            let startEvent = function(){
-                let response = function(data){
-                    if(data === true){
-                        location.reload();
-                    }
-                    else{
-                        console.log(`Response from start game: [${data}]`);
-                    }
-                };
-                let fail = function(err){
-                    console.log(err);
-                };
-                $.getJSON('game/startgame',response).fail(fail);
-            }
-            
-            $('#start').removeAttr('style').click(startEvent);
+        $.get('/room/admin', function (data) {
+            $('#admin').text(data);
+            $.get('/whoami',function(data2){
+                $('#whoami').text(data2);
 
-        }
+                if($('#admin').text() == $('#whoami').text()){
+                    let startgame = function(){
+                        $.getJSON('/game/startgame',function(res){
+                            if(res.responseJSON == true){
+                                location.reload();
+                            }
+                        }).fail(function(err){
+                            console.log(err.responseJSON);
+                        });
+                    };
+                    $('#start').click(startgame);
+                    $('#start').toggle();
+                }
+                else{
+                    $('#whoaction').text($('#admin').text());
+                    $('#action').toggle();
+                }
+            });
+        });
+
 
         setInterval(refreshCalls,5000);
         

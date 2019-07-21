@@ -3,6 +3,11 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     </header>
     <body>
+
+        <h1>
+            Dashboard:
+        </h1>
+        <br>
         Players:
         <div id="players"></div>
         <br>
@@ -15,7 +20,12 @@
         Who Am I:
         <div id="whoami"></div>
         <br>
-        Game:
+        Order:
+        <div id="order"></div>        
+        <br>
+        Current Leader:
+        <div id="currentLeader"></div>
+        <br>
     </body>
     <script>
         var refreshCalls = function(){
@@ -34,6 +44,14 @@
             $.get('/whoami',function(data){
                 $('#whoami').text(data);
             })
+
+            $.get('/room/currentleader',function(data){
+                $('#currentleader').text(data);
+            })
+
+            $.get('/room/order',function(data){
+                $('#order').text(data);
+            });
         }
         refreshCalls();
         setInterval(refreshCalls,5000);
