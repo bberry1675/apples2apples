@@ -3,12 +3,12 @@ const path = require('path');
 const htmlpath = './';
 module.exports.join = function(req, res) {
   if (req.app.locals.room === undefined) {
-    res.sendFile(path.join(__dirname, htmlpath, 'createroom.html'));
+    res.sendFile(path.join(__dirname, htmlpath, '../html/createroom.html'));
   } else {
     if (req.app.locals.room.started) {
       res.json('gamestarted');
     } else {
-      res.sendFile(path.join(__dirname, htmlpath, 'joinroom.html'));
+      res.sendFile(path.join(__dirname, htmlpath, '../html/joinroom.html'));
     }
   }
 };
@@ -61,9 +61,9 @@ module.exports.joinRoom = function(req, res) {
 module.exports.context = function(req, res) {
   const room = req.app.locals.room;
   if (room.started) {
-    res.sendFile(path.join(__dirname, htmlpath, 'dashboard.html'));
+    res.sendFile(path.join(__dirname, htmlpath, '../html/dashboard.html'));
   } else {
-    res.sendFile(path.join(__dirname, htmlpath, 'waitingroom.html'));
+    res.sendFile(path.join(__dirname, htmlpath, '../html/waitingroom.html'));
   }
 };
 module.exports.roomAPI = function(req, res) {

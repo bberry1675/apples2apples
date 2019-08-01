@@ -32,13 +32,13 @@ module.exports.objmiddleware = function(req, res, next) {
     // load in the cards from the files
     // load in the red cards
     if (!req.app.locals.game.redcards) {
-      const readtemp = fs.readFileSync('redcards.txt').toString('utf8');
+      const readtemp = fs.readFileSync('./data/redcards.txt').toString('utf8');
       req.app.locals.game.redcards = readtemp.split('\n').map(parseCardLine);
     }
 
     // load in the green cards from the files
     if (!req.app.locals.game.greencards) {
-      const readtemp = fs.readFileSync('greencards.txt').toString('utf8');
+      const readtemp = fs.readFileSync('./data/greencards.txt').toString('utf8');
       req.app.locals.greencards = readtemp.split('\n').map(parseCardLine);
     }
 

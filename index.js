@@ -12,8 +12,9 @@ app.use(session({
 
 app.use(express.urlencoded({extended: true}));
 
-const routes = require('./routes');
-const middleware = require('./middleware');
+
+const routes = require('./js/routes');
+const middleware = require('./js/middleware');
 
 app.post('/createroom', routes.createRoom);
 

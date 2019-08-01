@@ -4,7 +4,7 @@
   "description": "Apples to apples game",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "start": "node index.js"
   },
   "author": "brandon.jn.berry@gmail.com",
   "license": "ISC",
