@@ -81,6 +81,10 @@ module.exports.whoami = function(req, res) {
   res.json(req.session.playerId);
 };
 
+module.exports.getRoom = function(req,res) {
+  res.json(req.app.locals.room);
+}
+
 const gameRouter = require('express').Router();
 const gameRoutes = require('./gameroutes');
 const middleware = require('./middleware');

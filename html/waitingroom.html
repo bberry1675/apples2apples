@@ -3,60 +3,19 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     </header>
     <body>
-        Players:
-        <div id="players"></div>
-        <br>
-        Room Code:
-        <div id="rc"></div>
-        <br>
-        Admin:
-        <div id="admin"></div>
-        <br>
-        Who Am I:
-        <div id="whoami"></div>
-        <br>
-        <button id="start" style="display: none">Start Game</button>
-        <div id="action" style="display: none">
-            Waiting for <div id="whoaction"></div> to start the game.
+        Room:
+        <div id="room">
+
         </div>
     </body>
     <script>
         var refreshCalls = function(){
-            $.get('/room/players', function(data){
-                $('#players').text(data);
+            $.get('/room', function(data){
+                $('#room').text(JSON.stringify(data));
             });
             
         }
         refreshCalls();
-        
-        $.get('/room/code', function(data){
-            $('#rc').text(data);
-        });
-
-        $.get('/room/admin', function (data) {
-            $('#admin').text(data);
-            $.get('/whoami',function(data2){
-                $('#whoami').text(data2);
-
-                if($('#admin').text() == $('#whoami').text()){
-                    let startgame = function(){
-                        $.getJSON('/game/startgame',function(res){
-                            if(res.responseJSON == true){
-                                location.reload();
-                            }
-                        }).fail(function(err){
-                            console.log(err.responseJSON);
-                        });
-                    };
-                    $('#start').click(startgame);
-                    $('#start').toggle();
-                }
-                else{
-                    $('#whoaction').text($('#admin').text());
-                    $('#action').toggle();
-                }
-            });
-        });
 
 
         setInterval(refreshCalls,5000);
