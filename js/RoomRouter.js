@@ -1,19 +1,19 @@
 
 const express = require('express');
 const session = require('client-sessions');
-const router = express.Router();
+const router = new express.Router();
 const roomRoutes = require('./room/handlers');
 const roomMiddleWare = require('./room/middleware');
 const gamerouter = require('./GameRouter');
 
 router.use(session({
-    cookieName: 'session',
-    secret: 'random_string_goes_here',
-    duration: 30 * 60 * 1000,
-    activeDuration: 5 * 60 * 1000,
+  cookieName: 'session',
+  secret: 'random_string_goes_here',
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
 }));
 
-router.use(express.urlencoded({ extended: true }));
+router.use(express.urlencoded({extended: true}));
 
 /**
  * Create the room object and add it to room.locals
@@ -61,7 +61,11 @@ router.get('/room', roomMiddleWare.accessRoom, roomRoutes.getRoom);
  * Optional endpoint to return specific values of the room
  * TODO: make sure the request is in the room before they can query it
  */
-//router.get('/room/*', roomMiddleWare.requireJoin);
+// router.get('/room/*', roomMiddleWare.requireJoin);
 
+/**
+ * End point for the admin to start the game
+ */
+router.post('/startgame', roomMiddleWare.requireJoin, roomMiddleWare.requireAdmin, roomRoutes.startGame);
 
 module.exports = router;
