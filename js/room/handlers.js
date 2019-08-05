@@ -1,5 +1,6 @@
 const path = require('path');
 const htmlpath = path.join(__dirname, '../../html/');
+const fs = require('fs');
 const Utils = require('../utils');
 
 function getHTMLPath(filename) {
@@ -104,18 +105,20 @@ module.exports.getRoom = function(req, res) {
 /**
  * handler to start the game by setting the room to started
  * and creating the game object
+ * TODO: maybe move the creation of a game object to middle ware or create middleware to check game object
+ *       randomize the order and assign player cards?
  */
 module.exports.startGame = function(req, res) {
   const room = req.app.locals.room;
   room.started = true;
   req.app.locals.game = {
-      order: [],
-      currentLeader: 0,
-      wins: {},
-      playercards: {},
-      submittedcards: {},
-      redcards: {},
-      greencards: {},
+    order: [],
+    currentLeader: 0,
+    wins: {},
+    playercards: {},
+    submittedcards: {},
+    redcards: Utils.parseCards('../data/redcards.txt'),
+    greencards: Utils.parseCards('../data/greencards.txt'),
   };
   res.redirect('/game');
 };
